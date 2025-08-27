@@ -6,7 +6,7 @@
  * @return {object}
  */
 function convertToObject(sourceString) {
-  const obj = {};
+  const styles = {};
 
   // divide por ; e remove espaços extras e linhas vazias
   const rules = sourceString
@@ -14,15 +14,18 @@ function convertToObject(sourceString) {
     .map((rule) => rule.trim())
     .filter(Boolean);
 
-  for (const rule of rules) {
-    const [property, value] = rule.split(':');
+  rules.forEach((rule) => {
+    const idx = rule.indexOf(':');
 
-    if (property && value) {
-      obj[property.trim()] = value.trim();
+    if (idx > -1) {
+      const property = rule.slice(0, idx).trim();
+      const value = rule.slice(idx + 1).trim();
+
+      styles[property] = value;
     }
-  }
+  });
 
-  return obj;
+  return styles;
 }
 
 module.exports = convertToObject;
